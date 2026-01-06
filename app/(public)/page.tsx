@@ -143,19 +143,19 @@ export default function Home() {
           </p>
 
           {/* CTAs with different colors */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 justify-center reveal delay-400 px-4">
-            <Link href="/dashboard" className="btn-rainbow btn-shimmer text-base sm:text-lg !px-6 sm:!px-10 !py-3.5 sm:!py-5">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center reveal delay-400 px-4">
+            <Link href="/dashboard" className="btn-rainbow btn-shimmer text-base sm:text-lg !px-6 sm:!px-8 !py-3 sm:!py-4">
               <Rocket className="w-4 h-4 sm:w-5 sm:h-5" />
               Launch your empire
             </Link>
-            <Link href="/tools/rate-calculator" className="btn-ghost text-base sm:text-lg !px-6 sm:!px-10 !py-3.5 sm:!py-5">
+            <Link href="/tools/rate-calculator" className="btn-ghost text-base sm:text-lg !px-6 sm:!px-8 !py-3 sm:!py-4">
               <Play className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
               Free tools
             </Link>
           </div>
 
           {/* Social proof with varied colors */}
-          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 sm:gap-8 mt-10 sm:mt-16 reveal delay-500">
+          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 sm:gap-8 mt-12 sm:mt-20 reveal delay-500">
             <div className="flex items-center gap-3">
               <div className="flex -space-x-2 sm:-space-x-3">
                 {[

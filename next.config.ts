@@ -1,13 +1,17 @@
 import type { NextConfig } from "next";
 
+const isProd = process.env.NODE_ENV === 'production';
+const repoName = "LogicLoom";
+
 const nextConfig: NextConfig = {
   output: "export",
   images: {
     unoptimized: true,
   },
-  // If you are deploying to a GitHub Pages project site (e.g. username.github.io/repo-name),
-  // you must set the basePath to '/repo-name'.
-  // basePath: '/your-repo-name',
+  // Set the basePath for GitHub Pages deployment (e.g. /LogicLoom)
+  // This ensures assets (CSS, JS, Images) load correctly when hosted on a subdirectory.
+  // We only apply this in production builds.
+  basePath: isProd ? `/${repoName}` : undefined,
 };
 
 export default nextConfig;

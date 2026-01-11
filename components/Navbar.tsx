@@ -1,91 +1,110 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Add glass effect only when scrolled
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <nav className="bg-slate-900 border-b border-slate-800 text-white">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'glass border-b border-white/5 py-3' : 'bg-transparent py-5'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="text-xl font-bold text-blue-500">
-              LogicLoom
+            <Link href="/" className="text-2xl font-bold tracking-tight">
+              <span className="text-white">Logic</span>
+              <span className="text-gradient-vibrant">Loom</span>
             </Link>
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
-                <Link href="/tools/rate-calculator" className="hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium">
-                  Rate Calculator
-                </Link>
-                <Link href="/tools/engagement-analyzer" className="hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium">
-                  Engagement Analyzer
-                </Link>
-                <Link href="/pricing" className="hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium">
-                  Pricing
-                </Link>
+
+            {/* Desktop Nav */}
+            <div className="hidden md:block ml-10">
+              <div className="flex items-baseline space-x-1">
+                <NavLink href="/tools/rate-calculator">Rate Calculator</NavLink>
+                <NavLink href="/tools/engagement-analyzer">Analyzer</NavLink>
+                <NavLink href="/pricing">Pricing</NavLink>
               </div>
             </div>
           </div>
-          <div className="hidden md:block">
-            <div className="ml-4 flex items-center gap-4 md:ml-6">
-              <Link href="/login" className="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                Sign In
-              </Link>
-              <Link href="/signup" className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium">
-                Get Started
-              </Link>
-            </div>
+
+          {/* Desktop Auth Buttons */}
+          <div className="hidden md:flex items-center gap-4">
+            <Link
+              href="/login"
+              className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
+            >
+              Sign In
+            </Link>
+            <Link
+              href="/signup"
+              className="btn-teal !py-2 !px-5 !text-sm !rounded-lg hover:shadow-lg hover:shadow-teal-500/20"
+            >
+              Get Started
+            </Link>
           </div>
 
           {/* Mobile menu button */}
-          <div className="-mr-2 flex md:hidden">
+          <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              type="button"
-              className="bg-slate-800 inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-white"
-              aria-controls="mobile-menu"
-              aria-expanded="false"
+              className="p-2 text-gray-300 hover:text-white transition-colors"
             >
-              <span className="sr-only">Open main menu</span>
-              {isOpen ? (
-                <X className="block h-6 w-6" aria-hidden="true" />
-              ) : (
-                <Menu className="block h-6 w-6" aria-hidden="true" />
-              )}
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile menu, show/hide based on menu state */}
+      {/* Mobile menu */}
       {isOpen && (
-        <div className="md:hidden" id="mobile-menu">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <Link href="/tools/rate-calculator" className="text-slate-300 hover:bg-slate-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
-              Rate Calculator
+        <div className="md:hidden absolute top-full left-0 w-full glass border-b border-white/10 animate-fade-in">
+          <div className="px-4 pt-2 pb-6 space-y-2">
+            <MobileNavLink href="/tools/rate-calculator">Rate Calculator</MobileNavLink>
+            <MobileNavLink href="/tools/engagement-analyzer">Analyzer</MobileNavLink>
+            <MobileNavLink href="/pricing">Pricing</MobileNavLink>
+            <div className="h-px bg-white/10 my-4" />
+            <MobileNavLink href="/login">Sign In</MobileNavLink>
+            <Link
+              href="/signup"
+              className="block w-full text-center btn-teal mt-4"
+            >
+              Get Started
             </Link>
-            <Link href="/tools/engagement-analyzer" className="text-slate-300 hover:bg-slate-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
-              Engagement Analyzer
-            </Link>
-            <Link href="/pricing" className="text-slate-300 hover:bg-slate-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
-              Pricing
-            </Link>
-          </div>
-          <div className="pt-4 pb-3 border-t border-slate-700">
-            <div className="px-5 space-y-3">
-              <Link href="/login" className="block w-full text-center text-slate-300 hover:text-white px-3 py-2 rounded-md text-base font-medium bg-slate-800">
-                Sign In
-              </Link>
-              <Link href="/signup" className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-base font-medium">
-                Get Started
-              </Link>
-            </div>
           </div>
         </div>
       )}
     </nav>
   );
 }
+
+// Helper Components for clean code
+const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
+  <Link
+    href={href}
+    className="px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all"
+  >
+    {children}
+  </Link>
+);
+
+const MobileNavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
+  <Link
+    href={href}
+    className="block px-3 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-white/5"
+  >
+    {children}
+  </Link>
+);
